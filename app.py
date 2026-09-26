@@ -14,8 +14,8 @@ if api_key:
         # إعداد الذكاء الاصطناعي
         genai.configure(api_key=api_key)
         
-        # استخدام النموذج المحدث والمدعوم حالياً
-        model = genai.GenerativeModel('gemini-2.5-flash')
+        # استخدام النموذج المحدث والموصى به رسمياً حالياً
+        model = genai.GenerativeModel('gemini-3.8-flash')
 
         # تهيئة الذاكرة للمحادثة
         if "messages" not in st.session_state:
