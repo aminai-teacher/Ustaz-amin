@@ -1,24 +1,40 @@
 import streamlit as st
 import google.generativeai as genai
 
-# إعدادات صفحة الموقع مع اتجاه النص من اليمين لليسار لدعم العربية بشكل ممتاز
+# إعدادات صفحة الموقع
 st.set_page_config(page_title="مساعدك التعليمي - الأستاذ أمين", layout="centered")
 
-# حقن كود CSS بسيط لضبط اتجاه النص ونقاط القائمة لتظهر في المكان الصحيح باللغة العربية
+# تعديل كود الـ CSS لإجبار العناوين وكل النصوص والرسائل على التوجه لليمين (RTL) وضبط النقاط
 st.markdown("""
     <style>
-    body, .stChatMessage {
+    /* توجيه الصفحة بالكامل لليمين */
+    .stApp {
         direction: rtl;
         text-align: right;
     }
+    
+    /* ضبط العناوين الرئيسية والفرعية لتكون لليمين */
+    h1, h2, h3, h4, h5, h6, p, span, div, label {
+        direction: rtl !important;
+        text-align: right !important;
+    }
+
+    /* ضبط رسائل الدردشة واتجاهها */
+    .stChatMessage {
+        direction: rtl !important;
+        text-align: right !important;
+    }
+
+    /* ضبط النقاط والقوائم لتظهر بشكل سليم من اليمين */
     ul, ol {
-        direction: rtl;
-        text-align: right;
-        padding-right: 20px;
-        padding-left: 0px;
+        direction: rtl !important;
+        text-align: right !important;
+        padding-right: 20px !important;
+        padding-left: 0px !important;
     }
     li {
-        list-style-position: inside;
+        list-style-position: inside !important;
+        text-align: right !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -34,7 +50,7 @@ if api_key:
         # إعداد الذكاء الاصطناعي
         genai.configure(api_key=api_key)
         
-        # استخدام النموذج المحدث والموصى به
+        # استخدام النموذج المحدث
         model = genai.GenerativeModel('gemini-3.8-flash')
 
         # تهيئة الذاكرة للمحادثة
@@ -57,7 +73,7 @@ if api_key:
                 try:
                     chat_prompt = f"أنت معلم خبير وودود تدعى الأستاذ أمين. أجب عن هذا السؤال التعليمي باللغة العربية الفصحى وبطريقة واضحة ومبسطة، مع ترتيب النقاط بشكل سليم: {prompt}"
                     
-                    # استخدام stream=True لظهور الرد الفوري الحرفي
+                    # استخدام stream=True لظهور الرد الفوري
                     response = model.generate_content(chat_prompt, stream=True)
                     
                     # عرض الرد تدريجياً وبشكل حي
@@ -68,7 +84,7 @@ if api_key:
                             full_response += chunk.text
                             response_container.markdown(full_response + " ▌")
                     
-                    # إزالة مؤشر الكتابة المؤقت في النهاية وعرض النص النهائي
+                    # عرض النص النهائي
                     response_container.markdown(full_response)
                     st.session_state.messages.append({"role": "assistant", "content": full_response})
                     
