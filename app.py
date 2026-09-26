@@ -1,3 +1,4 @@
+
 import streamlit as st
 import google.generativeai as genai
 
@@ -10,11 +11,11 @@ st.write("مرحباً بك! أنا أستاذك الذكي، جاهز لمسا�
 api_key = st.text_input("أدخل مفتاح API الخاص بك:", type="password")
 
 if api_key:
-    # إعداد الذكاء الاصطناعي باستخدام النموذج المدعوم والمستقر
+    # إعداد الذكاء الاصطناعي
     genai.configure(api_key=api_key)
     
-    # استخدام نموذج جيميناي السريع والذكي
-    model = genai.GenerativeModel('gemini-1.5-flash')
+    # استخدام النموذج الأساسي المستقر جداً في المكتبة القديمة
+    model = genai.GenerativeModel('gemini-pro')
 
     # تهيئة الذاكرة للمحادثة
     if "messages" not in st.session_state:
@@ -34,7 +35,6 @@ if api_key:
         # توليد الرد من الأستاذ أمين
         with st.chat_message("assistant"):
             try:
-                # توجيه النموذج ليكون معلماً ودوداً وخبيراً
                 chat_prompt = f"أنت معلم خبير وودود تدعى الأستاذ أمين. أجب عن هذا السؤال التعليمي بطريقة واضحة ومبسطة ومفيدة للطالب: {prompt}"
                 response = model.generate_content(chat_prompt)
                 st.markdown(response.text)
@@ -42,4 +42,4 @@ if api_key:
             except Exception as e:
                 st.error(f"حدث خطأ أثناء الاتصال: {e}")
 else:
-    st.info("الرجاء إدخال مفتاح الـ API في الخانة بالاعلى لكي يبدأ الأستاذ أمين العمل معك.")
+    st.info("الرجاء إدخال مفتاح الـ API في الخانة بالأعلى لكي يبدأ الأستاذ أمين العمل معك.")
